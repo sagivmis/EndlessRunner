@@ -1,0 +1,7 @@
+Pixel Art Monster - Dungeon
+
+1.0.1
+	- Update included "Pixel Art Platformer - Village Props" to 2.1.0
+
+1.0.0
+    - First Release
