@@ -56,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242510565}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -158.0434}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7744129938716507801}
@@ -79,13 +79,18 @@ MonoBehaviour:
   - {fileID: 6922252748401112949, guid: 0408944f355421544b67d74f77b4be4c, type: 3}
   - {fileID: 8725946973143799291, guid: 47262c6b42b728641a6c0554e87e1d52, type: 3}
   - {fileID: 1117329294450850648, guid: 9de5fadbcbf1bca4db9c168c17d47531, type: 3}
+  warningPrefab: {fileID: 0}
   topBorder: {fileID: 2694486645235478812}
   bottomBorder: {fileID: 773949377925302787}
   parent: {fileID: 0}
   xAxisOffset: 35
+  warningXAxisOffset: 0
+  yBotOffset: 0
+  yTopOffset: 0
   topYborder: 0
   bottomYborder: 0
   timeToInstantiate: 2.5
+  warningTimer: 0
   timer: 0
 --- !u!114 &1242510568
 MonoBehaviour:
@@ -94,20 +99,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242510565}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b6318ba612225a4a906413c76489731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 8058599572978065580, guid: ac7c64fba73fe814793d33b8ef503318, type: 3}
+  warningPrefab: {fileID: 927002756083494419, guid: 2dc51e3e8e6f68e4eb88f146d2ca32aa, type: 3}
   topBorder: {fileID: 2694486645235478812}
   bottomBorder: {fileID: 773949377925302787}
   parent: {fileID: 601715014}
-  xAxisOffset: -23
+  xAxisOffset: 20
+  warningXAxisOffset: -13
+  yBotOffset: -1
+  yTopOffset: 7
   topYborder: 0
   bottomYborder: 0
   timeToInstantiate: 15
+  warningTimer: 3
   timer: Infinity
 --- !u!1 &1639916187
 GameObject:
@@ -154,13 +164,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 8058599572978065580, guid: ac7c64fba73fe814793d33b8ef503318, type: 3}
+  warningPrefab: {fileID: 0}
   topBorder: {fileID: 2694486645235478812}
   bottomBorder: {fileID: 773949377925302787}
   parent: {fileID: 601715014}
   xAxisOffset: -1
+  warningXAxisOffset: 0
+  yBotOffset: 0
+  yTopOffset: 0
   topYborder: 0
   bottomYborder: 0
   timeToInstantiate: 5
+  warningTimer: -1
   timer: Infinity
 --- !u!114 &1887194590
 MonoBehaviour:

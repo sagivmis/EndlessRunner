@@ -6,13 +6,16 @@ public class PrefabInstantiate : MonoBehaviour
 {
     [Tooltip("Add several for randomness")]
     [SerializeField] GameObject[] prefabs; // add several for randomness
+    [SerializeField] GameObject warningPrefab; // add several for randomness
     [Space(30)]
     [SerializeField] Transform topBorder;
     [SerializeField] Transform bottomBorder;
     [Space]
     [SerializeField] Transform parent;
     [Range(-100, 100)]
-    [SerializeField] float xAxisOffset = 0f;
+    [SerializeField] float xAxisOffset = 0f;    
+    [Range(-100, 100)]
+    [SerializeField] float warningXAxisOffset = 0f;
     [Range(-100, 100)]
     [SerializeField] float yBotOffset = 0f;
     [Range(-100, 100)]
@@ -50,33 +53,55 @@ public class PrefabInstantiate : MonoBehaviour
         {
             GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
             if (prefab.name == "Laser") warningTimer = 3f;
-            StartCoroutine(InstancePrefab(prefab, warningTimer));
+            print($"Starting {prefab.name} Instancing");
             timer = 0;
             updateTimers = false;
+            if (warningPrefab != null) StartCoroutine(InstancePrefab(prefab, warningTimer));
+            else if(warningPrefab == null) Instance(prefab);
         }
     }
 
     IEnumerator InstancePrefab(GameObject prefab, float waitBeforeInstantiate)
     {
-        /*
-          TO DO BEFORE INSTANTIATING
-         */
-
-        print($"{prefab.name} Waiting...\n for {warningTimer} seconds");
+        // TO DO BEFORE INSTANTIATING
         
-
-        /*
-          WAIT BEFORE INSTANTIATING
-         */
-        yield return new WaitForSeconds(waitBeforeInstantiate); 
-        
-        print($"{prefab.name} Done waiting.\n Waited {warningTimer} seconds");
-
-        /*
-         INSTANCE PREFAB
-         */
         float yAxis = Random.Range(topYborder + yTopOffset, bottomYborder + yBotOffset);
-        Vector2 spawnLocation = new Vector2(transform.position.x + xAxisOffset, yAxis);
+        Vector2 spawnLocation = new Vector2(transform.position.x - warningXAxisOffset, yAxis);
+
+        GameObject warningInstance = Instantiate(warningPrefab, spawnLocation, transform.rotation);
+        if (warningPrefab) warningInstance.transform.parent = parent;
+        
+        // WAIT BEFORE INSTANTIATING
+
+        yield return new WaitForSeconds(waitBeforeInstantiate);
+
+
+        // DESTROY PREVIOUS
+
+        print($"{prefab.name} Done waiting.\n Waited {warningTimer} seconds");
+        Destroy(warningInstance);
+
+        spawnLocation = new Vector2(transform.position.x - xAxisOffset, yAxis);
+        
+        // INSTANCE PREFAB
+         
+        GameObject instance = Instantiate(prefab, spawnLocation, transform.rotation);
+        instance.transform.parent = parent;
+        updateTimers = true;
+    }
+
+    public void Instance(GameObject prefab)
+    {
+
+        // TO DO BEFORE INSTANTIATING
+
+        float yAxis = Random.Range(topYborder + yTopOffset, bottomYborder + yBotOffset);
+        Vector2 spawnLocation = new Vector2(transform.position.x - warningXAxisOffset, yAxis);
+
+        spawnLocation = new Vector2(transform.position.x - xAxisOffset, yAxis);
+
+        // INSTANCE PREFAB
+
         GameObject instance = Instantiate(prefab, spawnLocation, transform.rotation);
         instance.transform.parent = parent;
         updateTimers = true;
