@@ -6376,30 +6376,6 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 955316713}
-    - target: {fileID: 1242510566, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
-      propertyPath: warningTimer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242510567, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242510568, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242510568, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
-      propertyPath: yBotOffset
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242510568, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
-      propertyPath: yTopOffset
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242510568, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
-      propertyPath: warningTimer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 1887194590, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
       propertyPath: scoreText
       value: 
