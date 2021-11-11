@@ -6376,6 +6376,10 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 955316713}
+    - target: {fileID: 1242510566, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
+      propertyPath: xAxisOffset
+      value: -35
+      objectReference: {fileID: 0}
     - target: {fileID: 1887194590, guid: 6bcc6d6f18a26904c96bf761e50c2b38, type: 3}
       propertyPath: scoreText
       value: 
