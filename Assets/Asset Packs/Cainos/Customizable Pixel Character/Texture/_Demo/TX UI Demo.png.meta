@@ -75,6 +75,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -532,6 +533,24 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      TX UI Demo Key Shift: 21300012
+      TX UI Demo Key W: 21300002
+      TX UI Demo Key LMB: 21300000
+      TX UI Demo Arrow R: 21300018
+      TX UI Demo Arrow L: 21300016
+      TX UI Demo Panel: 21300014
+      TX UI Demo Key S: 21300006
+      TX UI Demo Arrow D: 21300020
+      TX UI Demo Key [: 21300026
+      TX UI Demo Key Space: 21300010
+      TX UI Demo Slider Bar: 21300030
+      TX UI Demo Key D: 21300008
+      TX UI Demo Key ]: 21300028
+      TX UI Demo Key H: 7366979999835113132
+      TX UI Demo Key A: 21300004
+      TX UI Demo Key G: 21300022
+      TX UI Demo Key K: 21300024
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

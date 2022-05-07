@@ -13,6 +13,8 @@ TagManager:
   - Background
   - Ground
   - Main Menu
+  - ShopItem
+  - ItemPrice
   layers:
   - Default
   - TransparentFX

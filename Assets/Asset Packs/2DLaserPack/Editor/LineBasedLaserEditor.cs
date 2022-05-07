@@ -25,7 +25,6 @@ namespace TwoDLaserPack
     /// <summary>
     /// Custom inspector/editor for Laser component script
     /// </summary>
-    [CustomEditor(typeof(LineBasedLaser)), CanEditMultipleObjects]
     public class LineBasedLaserEditor : Editor
     {
         private void OnEnable()
@@ -47,7 +46,6 @@ namespace TwoDLaserPack
             EditorGUILayout.LabelField("<size=12><b>Laser settings</b></size>", enableRichTextStyle);
             EditorGUILayout.Space();
 
-            var lineBasedLaserRef = (LineBasedLaser)target;
 
             var laserTooltip = new GUIContent("Laser GameObject", "Reference to a suitable GameObject with LineRenderer component to use for the main laser.");
             var laserProp = serializedObject.FindProperty("laserLineRenderer");
@@ -210,10 +208,6 @@ namespace TwoDLaserPack
 
             #endregion
 
-            if (GUI.changed)
-            {
-                EditorUtility.SetDirty(lineBasedLaserRef);
-            }
 
             serializedObject.ApplyModifiedProperties();
         }
