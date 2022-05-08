@@ -25,7 +25,7 @@ public class UIController : MonoBehaviour
     bool wasDead = false;
     static string walletAddress;
     static string ethBalance;
-
+    //check
     private void  Start()
     {
         player = GameObject.FindWithTag("Player");
