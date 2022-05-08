@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Nethereum.JsonRpc.UnityClient;
 
 public class UIController : MonoBehaviour
     {
@@ -17,6 +18,7 @@ public class UIController : MonoBehaviour
     [SerializeField] TMP_Text walletAddressText;
     [SerializeField] TMP_Text ethBalanceText;
     [SerializeField] Button pauseButton;
+    [SerializeField] bool debugLogs = true;
     [DllImport("__Internal")] private static extern string WalletAddress();
     [DllImport("__Internal")] private static extern string EthBalance();
 
@@ -24,19 +26,54 @@ public class UIController : MonoBehaviour
     static string walletAddress;
     static string ethBalance;
 
-    private void Start()
+    private void  Start()
     {
         player = GameObject.FindWithTag("Player");
         scoreSystem = player.GetComponent<ScoreSystem>();
         cc = player.GetComponent<Cainos.CharacterController>();
         walletAddress = WalletAddress();
-        ethBalance = EthBalance();
+
+        StartCoroutine(getAccountBalance("0xAcD1Cdd365f7d42c846F21893fcD918e4713748b", GetEthBalance));
+    }
+
+
+
+    public static IEnumerator getAccountBalance(string address, System.Action<decimal> callback)
+    {
+       
+        var getBalanceRequest = new EthGetBalanceUnityRequest("https://mainnet.infura.io/v3/4679ded2f85c4d84b00e6cbd933df2cd");
+        yield return getBalanceRequest.SendRequest(address, Nethereum.RPC.Eth.DTOs.BlockParameter.CreateLatest());
+
+        if (getBalanceRequest.Exception == null)
+        {
+            var balance = getBalanceRequest.Result.Value;
+            callback(Nethereum.Util.UnitConversion.Convert.FromWei(balance, 18));
+        }
+        else
+        {
+            throw new System.InvalidOperationException("Get balance request failed");
+        }
+
     }
 
     public void GetWalletAddress()
     {
-        walletAddressText.text = walletAddress;
-        ethBalanceText.text = ethBalance;
+        int endIndex = walletAddress.Length;
+        string start = walletAddress.Substring(0, 6);
+        string end = walletAddress.Substring(endIndex-6, 6);
+
+        walletAddressText.text = $"{start}............{end}";
+    }
+
+    public void GetEthBalance(decimal balance)
+    {
+        ethBalance = (balance).ToString();
+        if (debugLogs)
+        {
+            print("balance from function imported:");
+            print(ethBalance);
+        }
+        ethBalanceText.text = ethBalance.Substring(0,7) + "E";
     }
 
     public void OpenMenu()
