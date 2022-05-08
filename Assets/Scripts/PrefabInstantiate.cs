@@ -20,6 +20,7 @@ public class PrefabInstantiate : MonoBehaviour
     [SerializeField] float yBotOffset = 0f;
     [Range(-100, 100)]
     [SerializeField] float yTopOffset = 0f;
+    [SerializeField] bool debugLogs = false;
 
 
 
@@ -53,7 +54,7 @@ public class PrefabInstantiate : MonoBehaviour
         {
             GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
             if (prefab.name == "Laser") warningTimer = 3f;
-            print($"Starting {prefab.name} Instancing");
+            if(debugLogs) print($"Starting {prefab.name} Instancing");
             timer = 0;
             updateTimers = false;
             if (warningPrefab != null) StartCoroutine(InstancePrefab(prefab, warningTimer));
@@ -78,7 +79,7 @@ public class PrefabInstantiate : MonoBehaviour
 
         // DESTROY PREVIOUS
 
-        print($"{prefab.name} Done waiting.\n Waited {warningTimer} seconds");
+        if(debugLogs) print($"{prefab.name} Done waiting.\n Waited {warningTimer} seconds");
         Destroy(warningInstance);
 
         spawnLocation = new Vector2(transform.position.x - xAxisOffset, yAxis);

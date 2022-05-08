@@ -12,28 +12,41 @@ mergeInto(LibraryManager.library, {
         var returnStr = ethereum.selectedAddress;
         var bufferSize = lengthBytesUTF8(returnStr) + 1;
         var buffer = _malloc(bufferSize);
-        stringToUTF8(returnStr, buffer, bufferSize);
+        stringToUTF8(returnStr, buffer, bufferSize)
+        console.log("buffer from jslib address:");
+        console.log(`${buffer}`);
         return buffer;
     },
 
-    EthBalance: function () {
-        var ethBalance="";
-        try {
-            ethereum.request({ method: "eth_getBalance", params: [ethereum.selectedAddress, "latest"] })
-                .then(function (res) {
-                    ethBalance = (parseInt(res) / (10 ** 18)).toString();
-                    console.log(ethBalance);
-                });
-        } catch (e) {
-            ethBalance = 0;
+
+    EthBalance: async function () {
+        var ethBalance = "";
+
+        async function GetBalanceMethod() {
+            let res = ethereum.request({ method: "eth_getBalance", params: [ethereum.selectedAddress, "latest"] }).then(function (res) {
+                ethBalance = (parseInt(res) / (10 ** 18)).toString();
+                console.log("inside function");
+                console.log(ethBalance);
+                return ethBalance;
+            })
+            return res;
         }
+
+        ethBalance = await GetBalanceMethod();
+
+        console.log("balance from jslib:");
+        console.log(`${ethBalance}`);
+        ethBalance = `${ethBalance}`;
 
         var bufferSize = lengthBytesUTF8(ethBalance) + 1;
         var buffer = _malloc(bufferSize);
         stringToUTF8(ethBalance, buffer, bufferSize);
+
+        console.log("buffer from jslib balance:");
+        console.log(`${buffer}`);
         return buffer;
 
-        return ethBalance;
+        //return ethBalance;
     }
 
 });
