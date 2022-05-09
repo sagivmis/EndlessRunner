@@ -33,7 +33,7 @@ public class UIController : MonoBehaviour
         cc = player.GetComponent<Cainos.CharacterController>();
         walletAddress = WalletAddress();
 
-        StartCoroutine(getAccountBalance("0xAcD1Cdd365f7d42c846F21893fcD918e4713748b", GetEthBalance));
+        StartCoroutine(getAccountBalance(walletAddress, GetEthBalance));
     }
 
 
