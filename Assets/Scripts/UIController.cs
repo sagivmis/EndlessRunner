@@ -6,74 +6,96 @@ using UnityEngine.UI;
 using Nethereum.JsonRpc.UnityClient;
 
 public class UIController : MonoBehaviour
-    {
+{
     GameObject player;
     ScoreSystem scoreSystem;
     Cainos.CharacterController cc;
 
+    // Menus
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject shop;
+    [SerializeField] GameObject buyGemsModal;
+
+    // Text fields
     [SerializeField] GameObject balancePanel;
     [SerializeField] Text menuScoreText;
     [SerializeField] TMP_Text walletAddressText;
     [SerializeField] TMP_Text ethBalanceText;
+
+    // others
     [SerializeField] Button pauseButton;
     [SerializeField] bool debugLogs = true;
+    [SerializeField] InputValue baliGemSlider;
+
+    public Gems gemsController;
+
+    // balance fields (shop and in-game)
+    [SerializeField] TMP_Text mainGameWindowBalanceText;
+    [SerializeField] TMP_Text mainMenuBalanceText;
+    [SerializeField] TMP_Text shopBalanceText;
+    [SerializeField] TMP_Text buyGemModalBalanceText;
+
     [DllImport("__Internal")] private static extern string WalletAddress();
     [DllImport("__Internal")] private static extern string EthBalance();
 
+    public string walletAddress;
+    public string ethBalance;
     bool wasDead = false;
-    static string walletAddress;
-    static string ethBalance;
-    //check
-    private void  Start()
+    public int gemBalance = 0;
+    public void setUIEthBalance(string balance) { ethBalance = balance; }
+    public void setUIWalletAddress(string address) { walletAddress = address; }
+
+    private void Start()
     {
         player = GameObject.FindWithTag("Player");
         scoreSystem = player.GetComponent<ScoreSystem>();
         cc = player.GetComponent<Cainos.CharacterController>();
-        walletAddress = WalletAddress();
+    
+        gemsController = player.GetComponent<Gems>();
+        gemBalance = gemsController.getGemBalance();
 
-        StartCoroutine(getAccountBalance(walletAddress, GetEthBalance));
     }
 
-
-
-    public static IEnumerator getAccountBalance(string address, System.Action<decimal> callback)
+    private void Update()
     {
-       
-        var getBalanceRequest = new EthGetBalanceUnityRequest("https://mainnet.infura.io/v3/4679ded2f85c4d84b00e6cbd933df2cd");
-        yield return getBalanceRequest.SendRequest(address, Nethereum.RPC.Eth.DTOs.BlockParameter.CreateLatest());
-
-        if (getBalanceRequest.Exception == null)
-        {
-            var balance = getBalanceRequest.Result.Value;
-            callback(Nethereum.Util.UnitConversion.Convert.FromWei(balance, 18));
-        }
-        else
-        {
-            throw new System.InvalidOperationException("Get balance request failed");
-        }
-
+        setBalanceFieldsEntireGame(gemBalance);
     }
+
+    public void setBalanceFieldsEntireGame(int value)
+    {
+        gemBalance = gemsController.getGemBalance();
+        mainGameWindowBalanceText.text = value.ToString();
+        mainMenuBalanceText.text = value.ToString();
+        shopBalanceText.text = value.ToString();
+        buyGemModalBalanceText.text = value.ToString();
+    }
+
 
     public void GetWalletAddress()
     {
-        int endIndex = walletAddress.Length;
-        string start = walletAddress.Substring(0, 6);
-        string end = walletAddress.Substring(endIndex-6, 6);
+        if (walletAddress.Length > 10)
+        {
+            int endIndex = walletAddress.Length;
+            string start = walletAddress.Substring(0, 6);
+            string end = walletAddress.Substring(endIndex - 6, 6);
+            if (debugLogs)
+            {
+                print($"WalletAddress: {walletAddress}");
+                print($"WalletAddress_First6Characters: {start}");
+                print($"WalletAddress_Last6Characters: {end}");
+            }
 
-        walletAddressText.text = $"{start}............{end}";
+            walletAddressText.text = $"{start}............{end}";
+        }
     }
 
-    public void GetEthBalance(decimal balance)
+    public void GetEthBalance()
     {
-        ethBalance = (balance).ToString();
         if (debugLogs)
         {
-            print("balance from function imported:");
-            print(ethBalance);
+            print($"BalanceImportedFunction: {ethBalance}");
         }
-        ethBalanceText.text = ethBalance.Substring(0,7) + "E";
+        ethBalanceText.text = ethBalance.Substring(0, 7) + "E";
     }
 
     public void OpenMenu()
@@ -85,28 +107,40 @@ public class UIController : MonoBehaviour
         if (cc.IsDead) wasDead = true;
         cc.IsDead = true;
         mainMenu.SetActive(true);
+        if (debugLogs)
+        {
+            print($"MenuOpen");
+        }
 
     }
-    
+
     public void CloseMenu()
     {
         pauseButton.gameObject.SetActive(true);
         balancePanel.gameObject.SetActive(true);
-        if(!wasDead) cc.IsDead = false;
+        if (!wasDead) cc.IsDead = false;
         mainMenu.SetActive(false);
+        if (debugLogs)
+        {
+            print($"MenuClose");
+        }
     }
 
-    public void OpenShop()
+    public void OpenShop() { shop.SetActive(true); }
+
+    public void CloseShop() { shop.SetActive(false); }
+
+    public void OpenBuyGemModal() { buyGemsModal.SetActive(true); }
+    public void CloseBuyGemModal() { buyGemsModal.SetActive(false); }
+
+    public void CompleteGemPurchase()
     {
-        shop.SetActive(true);
+        int amountWanted = baliGemSlider.getWantedAmountOfGems();
+        print($"WantedAmount: {amountWanted}");
+        // buy with metamask
 
+        gemsController.incrementGemBalanceBy((int)(amountWanted / gemsController.getGemPrice()));
+        print($"Balance: {gemsController.getGemBalance()}");
+        CloseBuyGemModal();
     }
-       
-    public void CloseShop()
-    {
-        shop.SetActive(false);
-    }
-
-
-
 }
