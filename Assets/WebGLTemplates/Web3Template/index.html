@@ -68,8 +68,8 @@
           mobileWarning.style.display = "none";
         }, 5000);
       } else {
-        canvas.style.width = "{{{ WIDTH }}}px";
-        canvas.style.height = "{{{ HEIGHT }}}px";
+        canvas.style.width = "calc({{{ WIDTH }}}px * 1.3)";
+        canvas.style.height = "calc({{{ HEIGHT }}}px * 1.3)";
       }
 #if BACKGROUND_FILENAME
       canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
