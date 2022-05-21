@@ -15,6 +15,7 @@ public class TesterEditor : Editor
         GameObject player = GameObject.FindWithTag("Player");
         Cainos.CharacterController controller = (player.GetComponent<Cainos.CharacterController>());
         Animator animator = player.GetComponentInChildren<Animator>();
+        Gems gemsController = player.GetComponent<Gems>();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Revive"))
@@ -25,8 +26,19 @@ public class TesterEditor : Editor
         {
             controller.Die();
         }
-
         GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if((GUILayout.Button("Add Gems (+5000)")))
+        {
+            gemsController.incrementGemBalanceBy(5000);
+        }
+        if((GUILayout.Button("Decrement Gems (-5000)")))
+        {
+            gemsController.incrementGemBalanceBy(-5000);
+        }
+        GUILayout.EndHorizontal();
+
         if (GUILayout.Button("Pound Ground")) {
             animator.SetBool("IsAttacking",true);
             animator.SetTrigger("Pound");
