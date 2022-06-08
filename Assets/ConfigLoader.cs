@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class ConfigLoader : MonoBehaviour
 {
-    public string gameOwnerAddress;
-    public string baliTokenAddress;
-    public string customTokenAddress;
-    public float tokenPrice;
+    private string gameOwnerAddress;
+    private string baliTokenAddress;
+    private string customTokenAddress;
+    private float baliTokenPrice;
+    private float custonTokenPrice;
 
     public TextAsset configJSON;
     public Config config = new Config();
-
+    public string GetOwnerAddress() { return gameOwnerAddress; }
+    public string GetBaliTokenAddress() { return baliTokenAddress; }
+    public string GetCustonToeknAddress() { return customTokenAddress; }
+    public float GetCustonToeknPrice() { return custonTokenPrice; }
+    public float GetBaliTokenPrice() { return baliTokenPrice; }
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +25,8 @@ public class ConfigLoader : MonoBehaviour
         gameOwnerAddress = config.gameOwnerAddress;
         baliTokenAddress = config.baliTokenAddress;
         customTokenAddress = config.customTokenAddress;
-        tokenPrice = config.tokenPrice;
+        custonTokenPrice = config.custonTokenPrice;
+        baliTokenPrice = config.baliTokenPrice;
     }
 
     // Update is called once per frame
@@ -36,5 +42,6 @@ public class Config
     public string gameOwnerAddress;
     public string baliTokenAddress;
     public string customTokenAddress;
-    public float tokenPrice;
+    public float baliTokenPrice;
+    public float custonTokenPrice;
 }

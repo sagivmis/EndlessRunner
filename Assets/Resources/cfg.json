@@ -2,5 +2,6 @@
   "gameOwnerAddress": "0xAcD1Cdd365f7d42c846F21893fcD918e4713748b",
   "baliTokenAddress": "0xb76a9AFf0F25276beaeD4139275dBbd37B0cB489",
   "customTokenAddress": "",
-  "tokenPrice": 0.0001
+  "baliTokenPrice": 0.0001,
+  "tokenPrice": 0
 }
