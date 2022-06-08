@@ -8,17 +8,19 @@ public class AccountController : MonoBehaviour
 {
 
     UIController uiController;
+    ConfigLoader config;
 	[DllImport("__Internal")] private static extern string WalletAddress();
     public static string walletAddress = "0xac";
     static string ethBalance = "00.00";
 
     void Start()
     {
+        config = GetComponent<ConfigLoader>();
         walletAddress = WalletAddress();
         StartCoroutine(getAccountBalance(walletAddress, SetEthBalance));
         uiController = GameObject.FindWithTag("Player").GetComponent<UIController>();
         uiController.setUIWalletAddress(walletAddress);
-	}
+    }
 
     public string GetEthBalance() { return ethBalance; }
 
