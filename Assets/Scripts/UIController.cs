@@ -71,7 +71,7 @@ public class UIController : MonoBehaviour
     }
 
 
-    public void GetWalletAddress()
+    public void SetWalletAddress()
     {
         if (walletAddress.Length > 10)
         {
@@ -89,7 +89,7 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void GetEthBalance()
+    public void SetEthBalance()
     {
         if (debugLogs)
         {
@@ -100,7 +100,7 @@ public class UIController : MonoBehaviour
 
     public void OpenMenu()
     {
-        GetWalletAddress();
+        SetWalletAddress();
         pauseButton.gameObject.SetActive(false);
         balancePanel.gameObject.SetActive(false);
         menuScoreText.text = scoreSystem.GetScore().ToString();

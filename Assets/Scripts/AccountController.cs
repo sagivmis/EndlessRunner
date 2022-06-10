@@ -47,7 +47,7 @@ public class AccountController : MonoBehaviour
     {
         ethBalance = (balance).ToString();
         uiController.setUIEthBalance(ethBalance);
-        uiController.GetEthBalance();
+        uiController.SetEthBalance();
     }
 
 
