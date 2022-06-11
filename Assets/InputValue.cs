@@ -25,6 +25,6 @@ public class InputValue : MonoBehaviour
         sliderInputString = sliderInput.value.ToString();
         amountInput.text = sliderInputString;
         totalAmountInput.text = sliderInputString + " K";
-        totalPrice.text = (sliderInputValue * gemsController.getGemPrice()).ToString() + " E";
+        totalPrice.text = (sliderInputValue * gemsController.GetGemPrice()).ToString() + " E";
     }
 }

@@ -31,11 +31,11 @@ public class TesterEditor : Editor
         GUILayout.BeginHorizontal();
         if((GUILayout.Button("Add Gems (+5000)")))
         {
-            gemsController.incrementGemBalanceBy(5000);
+            gemsController.IncrementGemBalanceBy(5000);
         }
         if((GUILayout.Button("Decrement Gems (-5000)")))
         {
-            gemsController.incrementGemBalanceBy(-5000);
+            gemsController.IncrementGemBalanceBy(-5000);
         }
         GUILayout.EndHorizontal();
 

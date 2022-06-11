@@ -26,7 +26,7 @@ public class ShopItem : MonoBehaviour
     {
         if (gemBalance >= itemPrice)
         {
-            gemController.incrementGemBalanceBy(-itemPrice);
+            gemController.IncrementGemBalanceBy(-itemPrice);
             incrementQuantityOwnedBy(1);
             quantityText.text = $"x{quantityOwned}";
 
@@ -37,13 +37,13 @@ public class ShopItem : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         gemController = player.GetComponent<Gems>();
-        gemBalance = gemController.getGemBalance();
+        gemBalance = gemController.GetGemBalance();
     }
 
     // Update is called once per frame
     void Update()
     {
-        gemBalance = gemController.getGemBalance();
+        gemBalance = gemController.GetGemBalance();
         priceText.text = itemPrice.ToString() ;
         if (quantityOwned > 0)
         {

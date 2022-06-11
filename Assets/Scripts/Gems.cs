@@ -7,34 +7,24 @@ public class Gems : MonoBehaviour
     public int gemBalance = 0;
     private float gemPrice = 0.001f; // ether for 1000 pack
 
-    public void setGemPrice(float newPrice)
+    public void SetGemPrice(float newPrice)
     {
         gemPrice = newPrice;
     }
 
-    public float getGemPrice() { return gemPrice; }
+    public float GetGemPrice() { return gemPrice; }
 
-    public int getGemBalance() { return gemBalance; }
+    public int GetGemBalance() { return gemBalance; }
 
-    public int incrementGemBalanceBy(int value)
+    public int IncrementGemBalanceBy(int value)
     {
         gemBalance += value;
         return gemBalance;
     }
 
-    public void setGemBalance(int value)
+    public void SetGemBalance(int value)
     {
         gemBalance = value;
     }
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
