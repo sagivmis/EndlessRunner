@@ -29,11 +29,6 @@ public class ConfigLoader : MonoBehaviour
         baliTokenPrice = config.baliTokenPrice;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
 
 [System.Serializable]

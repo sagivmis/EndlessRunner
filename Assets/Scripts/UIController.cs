@@ -15,12 +15,16 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject shop;
     [SerializeField] GameObject buyGemsModal;
+    [SerializeField] GameObject ethAPIModal;
 
     // Text fields
     [SerializeField] GameObject balancePanel;
     [SerializeField] Text menuScoreText;
     [SerializeField] TMP_Text walletAddressText;
     [SerializeField] TMP_Text ethBalanceText;
+    [SerializeField] TMP_Text ethBalanceTextAPIModal;
+    [SerializeField] TMP_Text walletAddressTextAPIModal;
+    [SerializeField] TMP_Text latestBlockTextAPIModal;
 
     // others
     [SerializeField] Button pauseButton;
@@ -42,8 +46,8 @@ public class UIController : MonoBehaviour
     public string ethBalance;
     bool wasDead = false;
     public int gemBalance = 0;
-    public void setUIEthBalance(string balance) { ethBalance = balance; }
-    public void setUIWalletAddress(string address) { walletAddress = address; }
+    public void SetUIEthBalance(string balance) { ethBalance = balance; }
+    public void SetUIWalletAddress(string address) { walletAddress = address; }
 
     private void Start()
     {
@@ -56,12 +60,21 @@ public class UIController : MonoBehaviour
 
     }
 
+    public void SetLatestBlockAPIModal(string value) { latestBlockTextAPIModal.text = value; }
+    public void SetWalletAddressAPIModal(string value) { walletAddressTextAPIModal.text = value; }
+    public void SetEthBalanceAPIModal(string value) { ethBalanceTextAPIModal.text = value; }
+    public void SetAPIModalAllRequests(string latestBlock, string walletAddress, string ethBalance) {
+        latestBlockTextAPIModal.text = latestBlock;
+        walletAddressTextAPIModal.text = walletAddress;
+        ethBalanceTextAPIModal.text = ethBalance;
+    }
+    //public void 
     private void Update()
     {
-        setBalanceFieldsEntireGame(gemBalance);
+        SetBalanceFieldsEntireGame(gemBalance);
     }
 
-    public void setBalanceFieldsEntireGame(int value)
+    public void SetBalanceFieldsEntireGame(int value)
     {
         gemBalance = gemsController.getGemBalance();
         mainGameWindowBalanceText.text = value.ToString();
@@ -102,7 +115,7 @@ public class UIController : MonoBehaviour
     {
         SetWalletAddress();
         pauseButton.gameObject.SetActive(false);
-        balancePanel.gameObject.SetActive(false);
+        balancePanel.SetActive(false);
         menuScoreText.text = scoreSystem.GetScore().ToString();
         if (cc.IsDead) wasDead = true;
         cc.IsDead = true;
@@ -117,7 +130,7 @@ public class UIController : MonoBehaviour
     public void CloseMenu()
     {
         pauseButton.gameObject.SetActive(true);
-        balancePanel.gameObject.SetActive(true);
+        balancePanel.SetActive(true);
         if (!wasDead) cc.IsDead = false;
         mainMenu.SetActive(false);
         if (debugLogs)
@@ -129,6 +142,8 @@ public class UIController : MonoBehaviour
     public void OpenShop() { shop.SetActive(true); }
 
     public void CloseShop() { shop.SetActive(false); }
+    public void OpenEthAPI() { ethAPIModal.SetActive(true); }
+    public void CloseEthAPI() { ethAPIModal.SetActive(false); }
 
     public void OpenBuyGemModal() { buyGemsModal.SetActive(true); }
     public void CloseBuyGemModal() { buyGemsModal.SetActive(false); }
