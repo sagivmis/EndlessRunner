@@ -4,23 +4,35 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using Nethereum.JsonRpc.UnityClient;
 using UnityEngine.Networking;
+using System.Globalization;
 
 public class AccountController : MonoBehaviour
 {
     const string API_URL = "https://mainnet.infura.io/v3/4679ded2f85c4d84b00e6cbd933df2cd";
+    const string SERVER_URL = "http://localhost:8080";
     UIController uiController;
     ConfigLoader config;
-	[DllImport("__Internal")] private static extern string WalletAddress();
+    Gems gemsController;
+    GameObject player;
+    
+    [DllImport("__Internal")] private static extern string WalletAddress();
+    
+    
     public static string walletAddress = "0xac";
     static string ethBalance = "00.00";
+    float amountWanted;
 
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         config = GetComponent<ConfigLoader>();
         walletAddress = WalletAddress();
         StartCoroutine(GetAccountBalance(walletAddress, SetEthBalance));
         uiController = GameObject.FindWithTag("Player").GetComponent<UIController>();
         uiController.SetUIWalletAddress(walletAddress);
+        gemsController = player.GetComponent<Gems>();
+
+        GetBaliBalance(walletAddress);
     }
 
     public string GetEthBalance() { return ethBalance; }
@@ -82,8 +94,9 @@ public class AccountController : MonoBehaviour
         GetEthBalanceAPIModal();
     }
 
-    public IEnumerator HttpGetRequest(string uri)
+    public IEnumerator HttpGetRequest(string uri, string method)
     {
+
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
         {
             // Request and wait for the desired page.
@@ -91,20 +104,60 @@ public class AccountController : MonoBehaviour
 
             string[] pages = uri.Split('/');
             int page = pages.Length - 1;
-
-            switch (webRequest.result)
+            switch (method)
             {
-                case UnityWebRequest.Result.ConnectionError:
-                case UnityWebRequest.Result.DataProcessingError:
-                    Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                case "sendEthTx":
+                    switch (webRequest.result)
+                    {
+                        case UnityWebRequest.Result.ConnectionError:
+                        case UnityWebRequest.Result.DataProcessingError:
+                            Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                            break;
+                        case UnityWebRequest.Result.ProtocolError:
+                            Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                            break;
+                        case UnityWebRequest.Result.Success:
+                            Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                            uiController.IncrementGemsBy((int)(amountWanted / gemsController.GetGemPrice()));
+                            break;
+                    }
                     break;
-                case UnityWebRequest.Result.ProtocolError:
-                    Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
-                    break;
-                case UnityWebRequest.Result.Success:
-                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                case "getBaliBalance":
+                    switch (webRequest.result)
+                    {
+                        case UnityWebRequest.Result.ConnectionError:
+                        case UnityWebRequest.Result.DataProcessingError:
+                            Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                            break;
+                        case UnityWebRequest.Result.ProtocolError:
+                            Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                            break;
+                        case UnityWebRequest.Result.Success:
+                            Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                            BaliBalanceResponse response = JsonUtility.FromJson<BaliBalanceResponse>(webRequest.downloadHandler.text);
+                            gemsController.SetGemBalance(response.baliBalance);
+                            break;
+                    }
                     break;
             }
+            
         }
     }
+
+    public void SendEthTx(string playerAddress, string amountInEth, string playerPrivateKey)
+    {
+        StartCoroutine(HttpGetRequest($"{SERVER_URL}/api/sendEthTx/{playerAddress}/{amountInEth}/{playerPrivateKey}", "sendEthTx"));
+        amountWanted = float.Parse(amountInEth) / gemsController.GetGemPrice() ;
+    }
+
+    public void GetBaliBalance(string playerAddress)
+    {
+        StartCoroutine(HttpGetRequest($"{SERVER_URL}/api/getBaliBalance/{playerAddress}", "getBaliBalance"));
+    }
+}
+
+[System.Serializable]
+public class BaliBalanceResponse
+{
+    public int baliBalance;
 }

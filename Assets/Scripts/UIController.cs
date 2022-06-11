@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
 {
     GameObject player;
     ScoreSystem scoreSystem;
+    AccountController accountController;
     Cainos.CharacterController cc;
 
     // Menus
@@ -20,6 +21,7 @@ public class UIController : MonoBehaviour
     // Text fields
     [SerializeField] GameObject balancePanel;
     [SerializeField] Text menuScoreText;
+    [SerializeField] TMP_Text playerPrivateKeyText;
     [SerializeField] TMP_Text walletAddressText;
     [SerializeField] TMP_Text ethBalanceText;
     [SerializeField] TMP_Text ethBalanceTextAPIModal;
@@ -46,6 +48,8 @@ public class UIController : MonoBehaviour
     public string ethBalance;
     bool wasDead = false;
     public int gemBalance = 0;
+    private string playerPrivateKey;
+
     public void SetUIEthBalance(string balance) { ethBalance = balance; }
     public void SetUIWalletAddress(string address) { walletAddress = address; }
 
@@ -54,9 +58,10 @@ public class UIController : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         scoreSystem = player.GetComponent<ScoreSystem>();
         cc = player.GetComponent<Cainos.CharacterController>();
-    
+
+        accountController = player.GetComponent<AccountController>();
         gemsController = player.GetComponent<Gems>();
-        gemBalance = gemsController.getGemBalance();
+        gemBalance = gemsController.GetGemBalance();
 
     }
 
@@ -76,7 +81,7 @@ public class UIController : MonoBehaviour
 
     public void SetBalanceFieldsEntireGame(int value)
     {
-        gemBalance = gemsController.getGemBalance();
+        gemBalance = gemsController.GetGemBalance();
         mainGameWindowBalanceText.text = value.ToString();
         mainMenuBalanceText.text = value.ToString();
         shopBalanceText.text = value.ToString();
@@ -150,12 +155,37 @@ public class UIController : MonoBehaviour
 
     public void CompleteGemPurchase()
     {
+        //int amountWanted = baliGemSlider.getWantedAmountOfGems();
+        //print($"WantedAmount: {amountWanted}");
+        //float packPrice = 0.001f;
+        //// buy with metamask
+
+        //gemsController.incrementGemBalanceBy((int)(amountWanted / gemsController.getGemPrice()));
+        //print($"Balance: {gemsController.getGemBalance()}");
+        //CloseBuyGemModal();
+
+        StartCoroutine(CompleteGemBuy());
+    }
+
+    public IEnumerator CompleteGemBuy()
+    {
         int amountWanted = baliGemSlider.getWantedAmountOfGems();
         print($"WantedAmount: {amountWanted}");
-        // buy with metamask
+        accountController.SendEthTx(walletAddress, (amountWanted * gemsController.GetGemPrice()).ToString(), playerPrivateKey);
+        
+        yield return new WaitForSeconds(5);
 
-        gemsController.incrementGemBalanceBy((int)(amountWanted / gemsController.getGemPrice()));
-        print($"Balance: {gemsController.getGemBalance()}");
+        print($"Balance: {gemsController.GetGemBalance()}");
         CloseBuyGemModal();
     }
+    public void IncrementGemsBy(int value)
+    {
+        gemsController.IncrementGemBalanceBy(value);
+    }
+    public void SetPlayerPrivateKey()
+    {
+        playerPrivateKey = playerPrivateKeyText.text;
+        print(playerPrivateKey);
+    }
+    public string GetPlayerPrivateKey() { return playerPrivateKey; }
 }
