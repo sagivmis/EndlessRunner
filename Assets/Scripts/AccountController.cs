@@ -8,7 +8,8 @@ using System.Globalization;
 
 public class AccountController : MonoBehaviour
 {
-    const string API_URL = "https://mainnet.infura.io/v3/4679ded2f85c4d84b00e6cbd933df2cd";
+    //const string API_URL = "https://mainnet.infura.io/v3/4679ded2f85c4d84b00e6cbd933df2cd";
+    const string API_URL = "https://eth-rinkeby.alchemyapi.io/v2/FyurlQP2uslRFw_nYtq6Mkz0oLmpJAN5";
     const string SERVER_URL = "http://localhost:8080";
     UIController uiController;
     ConfigLoader config;
@@ -106,7 +107,7 @@ public class AccountController : MonoBehaviour
             int page = pages.Length - 1;
             switch (method)
             {
-                case "sendEthTx":
+                case "mint":
                     switch (webRequest.result)
                     {
                         case UnityWebRequest.Result.ConnectionError:
@@ -135,7 +136,7 @@ public class AccountController : MonoBehaviour
                         case UnityWebRequest.Result.Success:
                             Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                             BaliBalanceResponse response = JsonUtility.FromJson<BaliBalanceResponse>(webRequest.downloadHandler.text);
-                            gemsController.SetGemBalance(response.baliBalance);
+                            gemsController.SetGemBalance(response.balance);
                             break;
                     }
                     break;
@@ -146,7 +147,7 @@ public class AccountController : MonoBehaviour
 
     public void SendEthTx(string playerAddress, string amountInEth, string playerPrivateKey)
     {
-        StartCoroutine(HttpGetRequest($"{SERVER_URL}/api/sendEthTx/{playerAddress}/{amountInEth}/{playerPrivateKey}", "sendEthTx"));
+        StartCoroutine(HttpGetRequest($"{SERVER_URL}/api/mintBaliTokens/{playerAddress}/{amountInEth}/{playerPrivateKey}", "mint"));
         amountWanted = float.Parse(amountInEth) / gemsController.GetGemPrice() ;
     }
 
@@ -159,5 +160,5 @@ public class AccountController : MonoBehaviour
 [System.Serializable]
 public class BaliBalanceResponse
 {
-    public int baliBalance;
+    public int balance;
 }
